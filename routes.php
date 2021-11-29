@@ -14,12 +14,23 @@ $router->addAfter(static function () {
     require_once __DIR__ . '/app/layout/footer.php';
 });
 
-$routes = [
-    new Route('GET', '(.*)', static function () {
-        header('HTTP/1.0 404 Not Found');
-        require_once __DIR__ . '/app/pages/404.php';
-    }),
-];
+/**
+ * Объединяет маршруты из разных модулей в один массив.
+ *
+ * Маршруты подгружаются из файлов соответствующих модулей.
+ * Каждый файл routes.php должен возвращать массив объектов класса {@link Route}.
+ *
+ * @var Route $routes
+ */
+$routes = array_merge(
+    require_once __DIR__ . '/app/index/routes.php',
+    [
+        new Route('GET', '(.*)', static function () {
+            header('HTTP/1.0 404 Not Found');
+            require_once __DIR__ . '/app/pages/404.php';
+        }),
+    ]
+);
 
 // Добавляем маршруты в роутер
 foreach ($routes as $route) {
