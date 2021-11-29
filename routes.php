@@ -24,6 +24,7 @@ $router->addAfter(static function () {
  */
 $routes = array_merge(
     require_once __DIR__ . '/app/index/routes.php',
+    require_once __DIR__ . '/app/auth/routes.php',
     [
         new Route('GET', '(.*)', static function () {
             header('HTTP/1.0 404 Not Found');
