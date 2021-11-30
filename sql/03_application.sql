@@ -2,7 +2,7 @@ create table application
 (
     id bigint auto_increment,
     author_id bigint not null,
-    resolver_id bigint not null,
+    resolver_id bigint null,
     category_id int not null,
     title varchar(512) charset utf8mb4 not null,
     description text charset utf8mb4 not null,
