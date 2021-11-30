@@ -129,7 +129,7 @@ final class Router
     {
         return static function () use ($expectedRequestMethods) {
             printf(
-                'Unexpected request method: %s. Allowed methods: %s.',
+                'Некорректный глагол запроса: %s. Разрешены следующие: %s.',
                 $_SERVER['REQUEST_METHOD'],
                 implode(', ', $expectedRequestMethods)
             );
