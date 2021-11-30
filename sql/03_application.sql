@@ -18,4 +18,5 @@ create table application
         foreign key (category_id) references application_category (id),
     constraint application_resolver_fk
         foreign key (resolver_id) references user (id)
-);
+)
+character set utf8mb4 collate utf8mb4_unicode_ci;
