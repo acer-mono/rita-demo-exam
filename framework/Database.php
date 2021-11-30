@@ -8,7 +8,12 @@ final class Database
 
     public static function createInstance(string $dsn, string $username, string $password): self
     {
-        self::$instance = new self(new PDO($dsn, $username, $password));
+        $pdo = new PDO($dsn, $username, $password);
+
+        // Указываем PDO кидать исключения в случае ошибок
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        self::$instance = new self($pdo);
 
         return self::$instance;
     }
