@@ -3,30 +3,6 @@ declare(strict_types=1);
 
 $router = new Router();
 
-$router->addBefore(static function () {
-    $lines = file(__DIR__ . '/.env');
-
-    $dsn = '';
-    $username = '';
-    $password = '';
-
-    foreach ($lines as $line) {
-        if (strpos($line, 'DB_DSN') === 0) {
-            $dsn = trim(substr($line, 7));
-        }
-
-        if (strpos($line, 'DB_USER') === 0) {
-            $username = trim(substr($line, 8));
-        }
-
-        if (strpos($line, 'DB_PASS') === 0) {
-            $password = trim(substr($line, 8));
-        }
-    }
-
-    Database::createInstance($dsn, $username, $password);
-});
-
 // Добавляем глобальные обработчики только в том случае,
 // если нам отправили обычный, а не AJAX-запрос
 if (!is_ajax_request()) {
