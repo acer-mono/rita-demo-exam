@@ -10,7 +10,6 @@ $files = [
     __DIR__ . '/framework/Route.php',
     __DIR__ . '/framework/Router.php',
     __DIR__ . '/framework/Session.php',
-    __DIR__ . '/framework/Authenticator.php',
     __DIR__ . '/framework/Database.php',
 ];
 

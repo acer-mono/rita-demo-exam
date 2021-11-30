@@ -7,10 +7,14 @@ declare(strict_types=1);
 final class Authenticator
 {
     private $session;
+    private $users;
 
-    public function __construct(Session $session)
-    {
+    public function __construct(
+        Session $session,
+        UserRepository $users
+    ) {
         $this->session = $session;
+        $this->users = $users;
     }
 
     /**
@@ -22,11 +26,12 @@ final class Authenticator
      */
     public function login(string $login, string $password): bool
     {
-        // TODO: проверять пользователя в базе данных
+        if ($this->users->exists($login, $password)) {
+            $this->session->login($login);
+            return true;
+        }
 
-        $this->session->login($login);
-
-        return true;
+        return false;
     }
 
     /**
