@@ -33,3 +33,17 @@ function is_ajax_request(): bool
 
     return $requestedWith || $accept;
 }
+
+/**
+ * Отправляет данные в JSON-формате.
+ *
+ * @param mixed $data
+ * @return callable
+ */
+function send_json($data): callable
+{
+    return static function () use ($data) {
+        header('Content-Type: application/json');
+        echo json_encode($data);
+    };
+}
