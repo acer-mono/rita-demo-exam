@@ -37,4 +37,39 @@ final class UserRepository
 
         return password_verify($password, $user['password']);
     }
+
+    /**
+     * Добавляет пользователя в БД.
+     *
+     * @param User $user
+     * @return bool
+     * @throws UserException
+     */
+    public function add(User $user): bool
+    {
+        try {
+            $sql =<<<SQL
+    INSERT INTO user (login, email, password, name, roles)
+    VALUES (:login, :email, :password, :name, :roles)
+SQL;
+
+            $stmt = $this->database
+                ->getConnection()
+                ->prepare($sql);
+
+            $stmt->bindValue(':login', $user->getLogin());
+            $stmt->bindValue(':email', $user->getEmail());
+            $stmt->bindValue(':password', $user->getPassword());
+            $stmt->bindValue(':name', $user->getName());
+            $stmt->bindValue(':roles', json_encode($user->getRoles()));
+
+            return $stmt->execute();
+        } catch (PDOException $exception) {
+            if ($exception->errorInfo[0] === '23000') {
+                throw UserException::alreadyExists($user->getLogin());
+            }
+
+            throw UserException::fromPrevious($exception);
+        }
+    }
 }
