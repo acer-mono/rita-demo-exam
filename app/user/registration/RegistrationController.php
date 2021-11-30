@@ -50,7 +50,6 @@ final class RegistrationController
             return;
         }
 
-
         $this->authenticator->login($_POST['login'], $_POST['password']);
 
         return redirect('/account');
