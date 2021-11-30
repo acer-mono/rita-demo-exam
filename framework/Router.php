@@ -92,6 +92,8 @@ final class Router
      */
     private function getHandler(string $path): callable
     {
+        $foundRouteMethods = [];
+
         foreach ($this->routes as $route) {
             // В переданном пути пытаемя найти
             // соответствия по регулярному выражению
@@ -101,10 +103,11 @@ final class Router
                 continue;
             }
 
-            // Если маршрут был найден, но глагол запроса не совпадает
-            // с глаголом этого маршрута, дальше не идём и возвращаем соответствущий обработчик.
+            // Если маршрут был найден, но глагол запроса не совпадает с глаголами,
+            // поддерживаемыми этим маршрутом, сохраняем их, чтобы вывести ошибку далее
             if (!in_array($_SERVER['REQUEST_METHOD'], $route->getMethods(), true)) {
-                return self::invalidRequestMethod($route->getMethods());
+                array_push($foundRouteMethods, ...$route->getMethods());
+                continue;
             }
 
             // Удаляем полный путь из массива найденных соответствий,
@@ -115,6 +118,10 @@ final class Router
             return self::found($route, $matches);
         }
 
+        if (!empty($foundRouteMethods)) {
+            return self::invalidRequestMethod(array_unique($foundRouteMethods));
+        }
+
         return self::notFound();
     }
 
@@ -122,7 +129,7 @@ final class Router
     {
         return static function () use ($expectedRequestMethods) {
             printf(
-                'Unexpected request method: %s. Only %s is allowed.',
+                'Unexpected request method: %s. Allowed methods: %s.',
                 $_SERVER['REQUEST_METHOD'],
                 implode(', ', $expectedRequestMethods)
             );
