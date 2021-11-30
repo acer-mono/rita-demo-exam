@@ -57,7 +57,27 @@ final class RegistrationController
 
     private static function validateInput(array $data): array
     {
-        return [];
+        $errors = [];
+
+        if (empty($data['login'])) {
+            $errors['login'] = 'Необходимо указать логин.';
+        }
+
+        if (empty($data['email']) || mb_strpos($data['email'], '@') === false) {
+            $errors['email'] = 'Необходимо указать корректный адрес электронной почты.';
+        }
+
+        if (empty($data['password'])) {
+            $errors['password'] = 'Необходимо указать пароль.';
+        } elseif (mb_strlen($data['password']) < 6) {
+            $errors['password'] = 'Пароль должен содержать не менее 6 символов.';
+        }
+
+        if (empty($data['name'])) {
+            $errors['name'] = 'Укажите своё имя.';
+        }
+
+        return $errors;
     }
 
     private static function createUser(array $data): User
