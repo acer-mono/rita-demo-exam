@@ -13,3 +13,23 @@ function redirect(string $path): callable
         header(sprintf('Location: %s', $path));
     };
 }
+
+/**
+ * Проверяет, является ли текущий запрос AJAX-запросом.
+ *
+ * @return bool
+ */
+function is_ajax_request(): bool
+{
+    $requestedWith = (
+        isset($_SERVER['HTTP_X_REQUESTED_WITH'])
+        && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest'
+    );
+
+    $accept = (
+        isset($_SERVER['HTTP_ACCEPT'])
+        && $_SERVER['HTTP_ACCEPT'] === 'application/json'
+    );
+
+    return $requestedWith || $accept;
+}
