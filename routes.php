@@ -3,16 +3,17 @@ declare(strict_types=1);
 
 $router = new Router();
 
-//
-// Сначала добавляем глобальные обработчики
-//
-$router->addBefore(static function () {
-    require_once __DIR__ . '/app/layout/header.php';
-});
+// Добавляем глобальные обработчики только в том случае,
+// если нам отправили обычный, а не AJAX-запрос
+if (!is_ajax_request()) {
+    $router->addBefore(static function () {
+        require_once __DIR__ . '/app/layout/header.php';
+    });
 
-$router->addAfter(static function () {
-    require_once __DIR__ . '/app/layout/footer.php';
-});
+    $router->addAfter(static function () {
+        require_once __DIR__ . '/app/layout/footer.php';
+    });
+}
 
 /**
  * Объединяет маршруты из разных модулей в один массив.
