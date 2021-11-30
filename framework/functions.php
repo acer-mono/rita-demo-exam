@@ -47,3 +47,27 @@ function send_json($data): callable
         echo json_encode($data);
     };
 }
+
+/**
+ * Проверяет залогинен ли пользователь.
+ *
+ * @return callable
+ */
+function check_is_logged_in(): callable
+{
+    if (Session::getInstance()->isLoggedIn()) {
+        return static function () {
+            // пользователь залогинен, ничего не делаем
+        };
+    }
+
+    header('HTTP/1.0 403 Forbidden');
+
+    if (is_ajax_request()) {
+        return send_json([
+            'error' => 'Ошибка доступа. Пожалуйста, войдите в систему.'
+        ]);
+    }
+
+    return redirect('/login');
+}
