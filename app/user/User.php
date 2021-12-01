@@ -15,13 +15,15 @@ class User
         string $email,
         string $password,
         string $name,
-        array $roles
+        array $roles,
+        int $id = null
     ) {
         $this->login = $login;
         $this->email = $email;
-        $this->password = password_hash($password, PASSWORD_DEFAULT);
+        $this->password = $password;
         $this->name = $name;
         $this->roles = $roles;
+        $this->id = $id;
     }
 
     public function getId()

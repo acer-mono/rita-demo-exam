@@ -85,7 +85,7 @@ final class RegistrationController
         return new User(
             $data['login'],
             $data['email'],
-            $data['password'],
+            password_hash($data['password'], PASSWORD_DEFAULT),
             $data['name'],
             ['user']
         );

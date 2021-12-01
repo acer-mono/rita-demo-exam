@@ -26,12 +26,22 @@ final class Authenticator
      */
     public function login(string $login, string $password): bool
     {
-        if ($this->users->exists($login, $password)) {
-            $this->session->login($login);
-            return true;
+        $user = $this->users->findByLogin($login);
+
+        if ($user === null) {
+            return false;
         }
 
-        return false;
+        if (!password_verify($password, $user->getPassword())) {
+            return false;
+        }
+
+        $this->session->store([
+            'login' => $user->getLogin(),
+            'roles' => $user->getRoles()
+        ]);
+
+        return true;
     }
 
     /**

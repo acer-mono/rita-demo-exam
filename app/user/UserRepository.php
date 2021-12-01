@@ -14,13 +14,12 @@ final class UserRepository
     }
 
     /**
-     * Проверяет, существует ли пользователь с указанным логином и паролем.
+     * Ищет пользователя по логину.
      *
      * @param string $login
-     * @param string $password
-     * @return bool
+     * @return User|null
      */
-    public function exists(string $login, string $password): bool
+    public function findByLogin(string $login)
     {
         $stmt = $this->database
             ->getConnection()
@@ -32,10 +31,17 @@ final class UserRepository
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user === false) {
-            return false;
+            return null;
         }
 
-        return password_verify($password, $user['password']);
+        return new User(
+            $user['login'],
+            $user['email'],
+            $user['password'],
+            $user['name'],
+            json_decode($user['roles'], true),
+            (int) $user['id']
+        );
     }
 
     /**

@@ -43,7 +43,7 @@ final class Session
 
     public function login(string $login)
     {
-        $_SESSION['login'] = $login;
+        $_SESSION = $data;
     }
 
     /**
