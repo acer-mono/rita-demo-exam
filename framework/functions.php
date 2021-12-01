@@ -71,3 +71,34 @@ function check_is_logged_in(): callable
 
     return redirect('/login');
 }
+
+/**
+ * Проверяет, является ли пользователь админом.
+ *
+ * @return callable
+ */
+function check_is_admin(): callable
+{
+    $session = Session::getInstance();
+
+    if ($session->isLoggedIn() && $session->hasRole('admin')) {
+        return static function () {
+            // пользователь админ, ничего не делаем
+        };
+    }
+
+    header('HTTP/1.0 403 Forbidden');
+
+    if (is_ajax_request()) {
+        return send_json([
+            'error' => 'Доступ в этот раздел ограничен.'
+        ]);
+    }
+
+    return static function () {
+        require_once __DIR__ . '/../app/pages/403.php';
+
+        // Отменяем выполнение всех остальных обработчиков маршрута
+        return false;
+    };
+}

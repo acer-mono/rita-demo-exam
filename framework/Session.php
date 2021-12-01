@@ -41,7 +41,20 @@ final class Session
         return !empty($_SESSION['login']);
     }
 
-    public function login(string $login)
+    /**
+     * Проверяет роль текущего пользователя сессии.
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole(string $role): bool
+    {
+        return array_key_exists('roles', $_SESSION)
+            && is_array($_SESSION['roles'])
+            && in_array($role, $_SESSION['roles'], true);
+    }
+
+    public function store(array $data)
     {
         $_SESSION = $data;
     }
