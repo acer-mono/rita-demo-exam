@@ -61,7 +61,7 @@ function check_is_logged_in(): callable
         };
     }
 
-    header('HTTP/1.0 403 Forbidden');
+    header('HTTP/1.0 401 Unauthorized');
 
     if (is_ajax_request()) {
         return send_json([
