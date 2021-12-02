@@ -36,4 +36,16 @@ final class Database
     {
         return $this->pdo;
     }
+
+    /**
+     * Возвращает идентификатор последней вставленной записи в БД.
+     *
+     * @return int
+     */
+    public function getLastInsertId(): int
+    {
+        return (int) $this->pdo
+            ->query('select last_insert_id()')
+            ->fetch(PDO::FETCH_COLUMN);
+    }
 }
