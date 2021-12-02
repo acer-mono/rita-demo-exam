@@ -32,7 +32,7 @@ final class LatestApplicationsQuery
 SQL;
 
         $stmt = $this->database->getConnection()->prepare($sql);
-        $stmt->bindValue(':limit', $limit);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
