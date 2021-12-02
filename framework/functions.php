@@ -35,6 +35,22 @@ function is_ajax_request(): bool
 }
 
 /**
+ * Вытаскивает JSON из сырых данных HTTP-запроса.
+ *
+ * @return array|null
+ */
+function get_json_input()
+{
+    $result = json_decode(file_get_contents('php://input'), true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        throw new \RuntimeException(json_last_error_msg());
+    }
+
+    return $result;
+}
+
+/**
  * Отправляет данные в JSON-формате.
  *
  * @param mixed $data
