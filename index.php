@@ -6,15 +6,15 @@ require_once __DIR__ . '/includes.php';
 // Подключаемся к БД
 require_once __DIR__ . '/database.php';
 
+// Стартуем пользовательскую сессию
+Session::getInstance()->start();
+
 /**
  * Добавляем маршруты в роутер.
  *
  * @var Router $router
  */
 $router = require_once __DIR__ . '/routes.php';
-
-// Стартуем пользовательскую сессию
-Session::getInstance()->start();
 
 /**
  * Пытаемся обработать текущий запрос к серверу.
