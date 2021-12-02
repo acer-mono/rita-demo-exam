@@ -8,6 +8,7 @@ create table application
     description text charset utf8mb4 not null,
     photo_before text charset utf8mb4 not null,
     photo_after text charset utf8mb4 null,
+    status int not null default 0,
     created_at datetime not null,
     updated_at datetime not null,
     constraint application_pk
