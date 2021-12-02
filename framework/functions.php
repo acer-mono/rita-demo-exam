@@ -38,13 +38,20 @@ function is_ajax_request(): bool
  * Отправляет данные в JSON-формате.
  *
  * @param mixed $data
+ * @param bool $terminate Указывает, необходимо ли отменить выполнение оставшихся обработчиков маршрута
  * @return callable
  */
-function send_json($data): callable
+function send_json($data, bool $terminate = false): callable
 {
-    return static function () use ($data) {
+    return static function () use ($data, $terminate) {
         header('Content-Type: application/json');
         echo json_encode($data);
+
+        // Отменяем выполнение оставшихся обработчиков маршрута,
+        // например, если пользователь не залогинен или не имеет соответствующих прав
+        if ($terminate) {
+            return false;
+        }
     };
 }
 
@@ -66,7 +73,7 @@ function check_is_logged_in(): callable
     if (is_ajax_request()) {
         return send_json([
             'error' => 'Ошибка доступа. Пожалуйста, войдите в систему.'
-        ]);
+        ], true);
     }
 
     return redirect('/login');
@@ -92,7 +99,7 @@ function check_is_admin(): callable
     if (is_ajax_request()) {
         return send_json([
             'error' => 'Доступ в этот раздел ограничен.'
-        ]);
+        ], true);
     }
 
     return static function () {
