@@ -59,9 +59,7 @@ final class Session
      */
     public function hasRole(string $role): bool
     {
-        return array_key_exists('roles', $_SESSION)
-            && is_array($_SESSION['roles'])
-            && in_array($role, $_SESSION['roles'], true);
+        return in_array($role, $_SESSION['roles'] ?? [], true);
     }
 
     public function store(array $data)
