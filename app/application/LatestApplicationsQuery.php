@@ -20,7 +20,6 @@ final class LatestApplicationsQuery
                    app.title,
                    app.description,
                    app.photo_before as photo,
-                   ac.uid as categoryUid,
                    ac.name as categoryName,
                    author.login as authorLogin,
                    author.name as authorName
