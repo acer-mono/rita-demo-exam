@@ -7,9 +7,9 @@ require_once __DIR__ . '/FetchApplicationsQuery.php';
 require_once __DIR__ . '/FetchLatestApplicationsQuery.php';
 
 $controller = new ApplicationController(
+    Session::getInstance(),
     new FetchLatestApplicationsQuery(Database::getInstance()),
-    new FetchApplicationsQuery(Database::getInstance()),
-    Session::getInstance()
+    new FetchApplicationsQuery(Database::getInstance())
 );
 
 return [
@@ -17,5 +17,5 @@ return [
     new Route('GET', '/applications/latest', [$controller, 'latest']),
     // Страница заявок
     (new Route('GET', '/applications', [$controller, 'list']))
-        ->addBefore(check_is_logged_in())
+        ->addBefore(check_is_logged_in()),
 ];

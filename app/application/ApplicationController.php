@@ -6,18 +6,18 @@ declare(strict_types=1);
  */
 final class ApplicationController
 {
+    private $session;
     private $latestApplicationsQuery;
     private $fetchApplicationsQuery;
-    private $session;
 
     public function __construct(
+        Session $session,
         FetchLatestApplicationsQuery $latestApplicationsQuery,
         FetchApplicationsQuery $fetchApplicationsQuery,
-        Session $session
     ) {
+        $this->session = $session;
         $this->latestApplicationsQuery = $latestApplicationsQuery;
         $this->fetchApplicationsQuery  = $fetchApplicationsQuery;
-        $this->session = $session;
     }
 
     /**
