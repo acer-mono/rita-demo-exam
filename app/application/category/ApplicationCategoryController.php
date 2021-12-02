@@ -37,11 +37,13 @@ final class ApplicationCategoryController
         $data = get_json_input();
 
         if (empty($data['name'])) {
-            return send_json_bad_request([
+            $response = [
                 'errors' => [
                     'Укажите название категории'
                 ]
-            ]);
+            ];
+
+            return send_json($response, 400);
         }
 
         return send_json([
@@ -60,11 +62,13 @@ final class ApplicationCategoryController
         $data = get_json_input();
 
         if (empty($data['name'])) {
-            return send_json_bad_request([
+            $response = [
                 'errors' => [
                     'Необходимо указать название категории'
                 ]
-            ]);
+            ];
+
+            return send_json($response, 400);
         }
 
         try {
@@ -76,11 +80,13 @@ final class ApplicationCategoryController
                 'categoryId' => $this->categories->store($category)
             ]);
         } catch (ApplicationCategoryNotFoundException $exception) {
-            return send_json_bad_request([
+            $response = [
                 'errors' => [
                     $exception->getMessage()
                 ]
-            ]);
+            ];
+
+            return send_json($response, 400);
         }
     }
 

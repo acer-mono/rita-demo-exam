@@ -54,35 +54,19 @@ function get_json_input()
  * Отправляет данные в JSON-формате.
  *
  * @param mixed $data
+ * @param int $code Код ответа от сервера
  * @param bool $terminate Указывает, необходимо ли отменить выполнение оставшихся обработчиков маршрута
  * @return callable
  */
-function send_json($data, bool $terminate = false): callable
+function send_json($data, int $code = 200, bool $terminate = false): callable
 {
-    return static function () use ($data, $terminate) {
+    return static function () use ($data, $code, $terminate) {
         header('Content-Type: application/json');
-        echo json_encode($data);
 
-        // Отменяем выполнение оставшихся обработчиков маршрута,
-        // например, если пользователь не залогинен или не имеет соответствующих прав
-        if ($terminate) {
-            return false;
+        if ($code !== 200) {
+            http_response_code($code);
         }
-    };
-}
 
-/**
- * Отправляет JSON с заголовком Bad Request.
- *
- * @param mixed $data
- * @param bool $terminate
- * @return callable
- */
-function send_json_bad_request($data, bool $terminate = false): callable
-{
-    return static function () use ($data, $terminate) {
-        header('Content-Type: application/json');
-        header('HTTP/1.0 400 Bad Request');
         echo json_encode($data);
 
         // Отменяем выполнение оставшихся обработчиков маршрута,
@@ -106,12 +90,10 @@ function check_is_logged_in(): callable
         };
     }
 
-    header('HTTP/1.0 401 Unauthorized');
-
     if (is_ajax_request()) {
         return send_json([
             'error' => 'Ошибка доступа. Пожалуйста, войдите в систему.'
-        ], true);
+        ], 401, true);
     }
 
     return redirect('/login');
@@ -132,12 +114,10 @@ function check_is_admin(): callable
         };
     }
 
-    header('HTTP/1.0 403 Forbidden');
-
     if (is_ajax_request()) {
         return send_json([
             'error' => 'Доступ в этот раздел ограничен.'
-        ], true);
+        ], 403, true);
     }
 
     return static function () {
