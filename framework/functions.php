@@ -72,6 +72,28 @@ function send_json($data, bool $terminate = false): callable
 }
 
 /**
+ * Отправляет JSON с заголовком Bad Request.
+ *
+ * @param mixed $data
+ * @param bool $terminate
+ * @return callable
+ */
+function send_json_bad_request($data, bool $terminate = false): callable
+{
+    return static function () use ($data, $terminate) {
+        header('Content-Type: application/json');
+        header('HTTP/1.0 400 Bad Request');
+        echo json_encode($data);
+
+        // Отменяем выполнение оставшихся обработчиков маршрута,
+        // например, если пользователь не залогинен или не имеет соответствующих прав
+        if ($terminate) {
+            return false;
+        }
+    };
+}
+
+/**
  * Проверяет залогинен ли пользователь.
  *
  * @return callable
