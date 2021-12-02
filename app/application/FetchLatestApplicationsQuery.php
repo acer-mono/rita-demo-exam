@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * Запрос на выборку последних заявок.
  */
-final class LatestApplicationsQuery
+final class FetchLatestApplicationsQuery
 {
     private $database;
 
@@ -13,7 +13,7 @@ final class LatestApplicationsQuery
         $this->database = $database;
     }
 
-    public function fetch(int $limit): array
+    public function execute(int $limit): array
     {
         $sql =<<<SQL
             select app.id,
