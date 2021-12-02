@@ -32,7 +32,7 @@ final class LatestApplicationsQuery
             limit :limit
 SQL;
 
-        $stmt = $this->database->getConnection()->query($sql);
+        $stmt = $this->database->getConnection()->prepare($sql);
         $stmt->bindValue(':limit', $limit);
         $stmt->execute();
 
