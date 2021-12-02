@@ -16,7 +16,7 @@ final class LatestApplicationsQuery
     public function fetch(int $limit): array
     {
         $sql =<<<SQL
-            SELECT app.id,
+            select app.id,
                    app.title,
                    app.description,
                    app.photo_before as photo,
@@ -24,12 +24,12 @@ final class LatestApplicationsQuery
                    ac.name as categoryName,
                    author.login as authorLogin,
                    author.name as authorName
-            FROM application app
-            INNER JOIN application_category ac on app.category_id = ac.id
-            INNER JOIN user author on app.author_id = author.id
-            WHERE app.resolver_id IS NULL
-            ORDER BY created_at DESC
-            LIMIT :limit
+            from application app
+            inner join application_category ac on app.category_id = ac.id
+            inner join user author on app.author_id = author.id
+            where app.resolver_id is null
+            order by created_at desc
+            limit :limit
 SQL;
 
         $stmt = $this->database->getConnection()->query($sql);
