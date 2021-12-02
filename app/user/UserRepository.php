@@ -25,8 +25,7 @@ final class UserRepository
             ->getConnection()
             ->prepare('SELECT * FROM user WHERE login = :login');
 
-        $stmt->bindValue(':login', $login);
-        $stmt->execute();
+        $stmt->execute([':login' => $login]);
 
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -59,17 +58,16 @@ final class UserRepository
     VALUES (:login, :email, :password, :name, :roles)
 SQL;
 
-            $stmt = $this->database
+            return $this->database
                 ->getConnection()
-                ->prepare($sql);
-
-            $stmt->bindValue(':login', $user->getLogin());
-            $stmt->bindValue(':email', $user->getEmail());
-            $stmt->bindValue(':password', $user->getPassword());
-            $stmt->bindValue(':name', $user->getName());
-            $stmt->bindValue(':roles', json_encode($user->getRoles()));
-
-            return $stmt->execute();
+                ->prepare($sql)
+                ->execute([
+                    ':login' => $user->getLogin(),
+                    ':email' => $user->getEmail(),
+                    ':password' => $user->getPassword(),
+                    ':name' => $user->getName(),
+                    ':roles' => json_encode($user->getRoles())
+                ]);
         } catch (PDOException $exception) {
             if ($exception->errorInfo[0] === '23000') {
                 throw UserException::alreadyExists($user->getLogin());
