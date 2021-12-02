@@ -13,11 +13,11 @@ final class ApplicationController
     public function __construct(
         Session $session,
         FetchLatestApplicationsQuery $latestApplicationsQuery,
-        FetchApplicationsQuery $fetchApplicationsQuery,
+        FetchApplicationsQuery $fetchApplicationsQuery
     ) {
         $this->session = $session;
         $this->latestApplicationsQuery = $latestApplicationsQuery;
-        $this->fetchApplicationsQuery  = $fetchApplicationsQuery;
+        $this->fetchApplicationsQuery = $fetchApplicationsQuery;
     }
 
     /**
