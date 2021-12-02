@@ -42,6 +42,16 @@ final class Session
     }
 
     /**
+     * Возвращает идентификатор залогиненного пользователя или NULL, если он не залогинен.
+     *
+     * @return int|null
+     */
+    public function getUserId()
+    {
+        return $_SESSION['user_id'] ?? null;
+    }
+
+    /**
      * Проверяет роль текущего пользователя сессии.
      *
      * @param string $role

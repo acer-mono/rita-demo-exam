@@ -37,6 +37,7 @@ final class Authenticator
         }
 
         $this->session->store([
+            'user_id' => $user->getId(),
             'login' => $user->getLogin(),
             'roles' => $user->getRoles()
         ]);
