@@ -12,6 +12,7 @@ final class Application
     private $photoBefore;
     private $photoAfter;
     private $status;
+    private $resolution;
     private $createdAt;
     private $updatedAt;
 
@@ -63,6 +64,7 @@ final class Application
         $self->photoBefore = $data['photo_before'];
         $self->photoAfter = $data['photo_after'];
         $self->status = (int) $data['status'];
+        $self->resolution = $data['resolution'];
         $self->createdAt = new DateTimeImmutable($data['created_at']);
         $self->updatedAt = new DateTimeImmutable($data['updated_at']);
 
@@ -125,6 +127,14 @@ final class Application
     public function getStatus(): int
     {
         return $this->status;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getResolution()
+    {
+        return $this->resolution;
     }
 
     public function isNew(): bool
