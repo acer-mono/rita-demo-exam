@@ -30,6 +30,7 @@ final class FetchApplicationsQuery
                    app.photo_before as photoBefore,
                    app.photo_after as photoAfter,
                    app.status as status,
+                   app.rejection_reason as rejectionReason,
                    app.created_at as createdAt,
                    app.updated_at as updatedAt,
                    ac.name as categoryName,
