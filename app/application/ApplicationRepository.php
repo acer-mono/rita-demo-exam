@@ -38,16 +38,15 @@ final class ApplicationRepository
     }
 
     /**
-     * Удаляет заявку по её идентификатору, если она новая.
+     * Удаляет заявку.
      *
-     * @param int $id
+     * @param Application $application
      */
-    public function removeById(int $id)
+    public function remove(Application $application)
     {
-        $sql = 'delete from application where id = :id and status = :status';
+        $sql = 'delete from application where id = :id';
         $stmt = $this->database->getConnection()->prepare($sql);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-        $stmt->bindValue(':status', ApplicationStatus::NEW);
+        $stmt->bindValue(':id', $application->getId(), PDO::PARAM_INT);
         $stmt->execute();
     }
 }

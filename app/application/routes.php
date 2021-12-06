@@ -31,7 +31,7 @@ $routes = [
     (new Route('GET', '/applications/(\d+)', [$controller, 'show']))
         ->addBefore(check_is_logged_in()),
     (new Route('POST', '/applications/(\d+)/delete', [$controller, 'show']))
-        ->addBefore(check_is_admin()),
+        ->addBefore(check_is_logged_in()),
     //(new Route('POST', '/applications', [$controller, 'store']))
     //   ->addBefore(check_is_logged_in())
 ];

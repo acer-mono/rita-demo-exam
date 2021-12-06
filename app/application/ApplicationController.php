@@ -85,15 +85,41 @@ final class ApplicationController
     /**
      * Удаляет заявку по указанному идентифкатору.
      *
-     * @param $id
+     * @param int $id
      * @return callable
      */
-    public function delete($id)
+    public function delete($id): callable
     {
-        $this->applications->removeById($id);
+        if ($this->session->isAdmin()) {
+            return send_json([
+                'error' => 'Вы не можете выполнить это действие.'
+            ]);
+        }
 
-        return send_json([
-            //
-        ]);
+        try {
+            $application = $this->applications->getById((int) $id);
+
+            if (!$application->isNew()) {
+                return send_json([
+                    'error' => 'Удалить можно только новую заявку.'
+                ], 400);
+            }
+
+            if ($application->getAuthorId() !== $this->session->getUserId()) {
+                return send_json([
+                    'error' => 'Заявка не найдена'
+                ], 404);
+            }
+
+            $this->applications->remove($application);
+
+            return send_json([
+                //
+            ]);
+        } catch (ApplicationNotFoundException $exception) {
+            return send_json([
+                'error' => $exception->getMessage()
+            ], 404);
+        }
     }
 }

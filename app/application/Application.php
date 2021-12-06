@@ -127,6 +127,11 @@ final class Application
         return $this->status;
     }
 
+    public function isNew(): bool
+    {
+        return $this->status === ApplicationStatus::NEW;
+    }
+
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
