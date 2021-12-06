@@ -94,6 +94,7 @@ final class Application
 
         $this->resolverId = $userId;
         $this->resolution = $resolution;
+        $this->status = ApplicationStatus::REJECTED;
         $this->updatedAt = new DateTimeImmutable();
     }
 
