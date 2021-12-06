@@ -9,7 +9,7 @@ create table application
     photo_before text charset utf8mb4 not null,
     photo_after text charset utf8mb4 null,
     status int not null default 0,
-    rejection_reason text null,
+    resolution text null,
     created_at datetime not null,
     updated_at datetime not null,
     constraint application_pk
