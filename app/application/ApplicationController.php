@@ -9,15 +9,18 @@ final class ApplicationController
     private $session;
     private $latestApplicationsQuery;
     private $fetchApplicationsQuery;
+    private $countResolvedApplicationsQuery;
 
     public function __construct(
         Session $session,
         FetchLatestApplicationsQuery $latestApplicationsQuery,
-        FetchApplicationsQuery $fetchApplicationsQuery
+        FetchApplicationsQuery $fetchApplicationsQuery,
+        CountResolvedApplicationsQuery $countResolvedApplicationsQuery
     ) {
         $this->session = $session;
         $this->latestApplicationsQuery = $latestApplicationsQuery;
         $this->fetchApplicationsQuery = $fetchApplicationsQuery;
+        $this->countResolvedApplicationsQuery = $countResolvedApplicationsQuery;
     }
 
     /**
@@ -43,5 +46,17 @@ final class ApplicationController
         }
 
         require_once __DIR__ . '/list.php';
+    }
+
+    /**
+     * Возвращает общее количество закрытых заявок.
+     *
+     * @return callable
+     */
+    public function total(): callable
+    {
+        return send_json([
+            'total' => $this->countResolvedApplicationsQuery->execute()
+        ]);
     }
 }

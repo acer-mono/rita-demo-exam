@@ -6,13 +6,16 @@ require_once __DIR__ . '/ApplicationController.php';
 require_once __DIR__ . '/ApplicationNotFoundException.php';
 require_once __DIR__ . '/ApplicationRepository.php';
 require_once __DIR__ . '/ApplicationStatus.php';
+require_once __DIR__ . '/CountResolvedApplicationsQuery.php';
 require_once __DIR__ . '/FetchApplicationsQuery.php';
 require_once __DIR__ . '/FetchLatestApplicationsQuery.php';
 
+$database = Database::getInstance();
 $controller = new ApplicationController(
     Session::getInstance(),
-    new FetchLatestApplicationsQuery(Database::getInstance()),
-    new FetchApplicationsQuery(Database::getInstance())
+    new FetchLatestApplicationsQuery($database),
+    new FetchApplicationsQuery($database),
+    new CountResolvedApplicationsQuery($database)
 );
 
 $routes = [
@@ -21,6 +24,7 @@ $routes = [
     // Страница заявок
     (new Route('GET', '/applications', [$controller, 'list']))
         ->addBefore(check_is_logged_in()),
+    (new Route('GET', '/applications/total', [$controller, 'total']))
     //(new Route('POST', '/applications', [$controller, 'store']))
     //   ->addBefore(check_is_logged_in())
 ];
