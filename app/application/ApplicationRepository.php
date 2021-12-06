@@ -17,8 +17,9 @@ final class ApplicationRepository
      * Возвращает заявку по её идентификатору.
      *
      * @param int $id
+     *
      * @return Application
-     * @throws ApplicationNotFoundException В случае если заявка не найдена
+     * @throws ApplicationException В случае если заявка не найдена
      */
     public function getById(int $id): Application
     {
@@ -31,7 +32,7 @@ final class ApplicationRepository
         $application = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($application === false) {
-            throw new ApplicationNotFoundException(sprintf('Заявка %d не найдена', $id));
+            throw ApplicationException::notFound($id);
         }
 
         return Application::fromStorage($application);

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/Application.php';
 require_once __DIR__ . '/ApplicationController.php';
-require_once __DIR__ . '/ApplicationNotFoundException.php';
+require_once __DIR__ . '/ApplicationException.php';
 require_once __DIR__ . '/ApplicationRepository.php';
 require_once __DIR__ . '/ApplicationStatus.php';
 require_once __DIR__ . '/CountResolvedApplicationsQuery.php';

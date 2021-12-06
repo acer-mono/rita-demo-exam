@@ -110,7 +110,7 @@ final class ApplicationController
             return send_json([
                 //
             ]);
-        } catch (ApplicationNotFoundException $exception) {
+        } catch (ApplicationException $exception) {
             return send_json([
                 'error' => $exception->getMessage()
             ], 404);
