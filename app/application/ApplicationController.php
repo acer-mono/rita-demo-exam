@@ -10,17 +10,20 @@ final class ApplicationController
     private $latestApplicationsQuery;
     private $fetchApplicationsQuery;
     private $countResolvedApplicationsQuery;
+    private $fetchSingleApplicationQuery;
 
     public function __construct(
         Session $session,
         FetchLatestApplicationsQuery $latestApplicationsQuery,
         FetchApplicationsQuery $fetchApplicationsQuery,
-        CountResolvedApplicationsQuery $countResolvedApplicationsQuery
+        CountResolvedApplicationsQuery $countResolvedApplicationsQuery,
+        FetchSingleApplicationQuery $fetchSingleApplicationQuery
     ) {
         $this->session = $session;
         $this->latestApplicationsQuery = $latestApplicationsQuery;
         $this->fetchApplicationsQuery = $fetchApplicationsQuery;
         $this->countResolvedApplicationsQuery = $countResolvedApplicationsQuery;
+        $this->fetchSingleApplicationQuery = $fetchSingleApplicationQuery;
     }
 
     /**
@@ -58,5 +61,21 @@ final class ApplicationController
         return send_json([
             'total' => $this->countResolvedApplicationsQuery->execute()
         ]);
+    }
+
+    /**
+     * Выводит информацию о заявке с указанным идентификатором.
+     *
+     * @param int $id
+     */
+    public function show($id)
+    {
+        $application = $this->fetchSingleApplicationQuery->execute((int) $id);
+
+        if ($application === null || (int) $application['authorId'] !== $this->session->getUserId()) {
+            return show_404();
+        }
+
+        require_once __DIR__ . '/show.php';
     }
 }
