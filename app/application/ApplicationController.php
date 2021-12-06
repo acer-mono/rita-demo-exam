@@ -112,6 +112,54 @@ final class ApplicationController
     }
 
     /**
+     * Разрешает заявку с указанным идентификатором.
+     *
+     * @param $id
+     * @return callable
+     */
+    public function resolve($id): callable
+    {
+        try {
+            $errors = self::validateResolutionInput($_POST, $_FILES);
+
+            if (!empty($errors)) {
+                return send_json([
+                    'errors' => $errors
+                ]);
+            }
+
+            $application = $this->applications->getById((int) $id);
+
+            // todo: загрузка файла
+
+            $application->resolve(
+                $this->session->getUserId(),
+                $_POST['resolution'],
+                '' // todo: путь к файлу
+            );
+
+            return send_json([
+                //
+            ]);
+        } catch (ApplicationException $exception) {
+            return send_json([
+                'error' => $exception->getMessage()
+            ], 400);
+        }
+    }
+
+    private static function validateResolutionInput(array $data, array $files): array
+    {
+        $errors = [];
+
+        if (empty($data['resolution'])) {
+            $errors[] = 'Необходимо указать описание решения.';
+        }
+
+        return $errors;
+    }
+
+    /**
      * Удаляет заявку по указанному идентифкатору.
      *
      * @param int $id

@@ -30,7 +30,9 @@ $routes = [
     (new Route('GET', '/applications/total', [$controller, 'total'])),
     (new Route('GET', '/applications/(\d+)', [$controller, 'show']))
         ->addBefore(check_is_logged_in()),
-    (new Route('GET', '/applications/(\d+)/reject', [$controller, 'reject']))
+    (new Route('POST', '/applications/(\d+)/reject', [$controller, 'reject']))
+        ->addBefore(check_is_admin()),
+    (new Route('POST', '/applications/(\d+)/resolve', [$controller, 'resolve']))
         ->addBefore(check_is_admin()),
     (new Route('POST', '/applications/(\d+)/delete', [$controller, 'show']))
         ->addBefore(check_is_logged_in())

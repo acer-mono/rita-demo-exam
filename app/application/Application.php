@@ -99,6 +99,35 @@ final class Application
     }
 
     /**
+     * Разрешает заявку.
+     *
+     * @param int $userId
+     * @param string $resolution
+     * @param string $photoAfter
+     * @throws ApplicationException
+     */
+    public function resolve(int $userId, string $resolution, string $photoAfter)
+    {
+        if (!$this->isNew()) {
+            throw ApplicationException::cannotResolve();
+        }
+
+        if (empty($resolution)) {
+            throw ApplicationException::emptyResolution();
+        }
+
+        if (empty($photoAfter)) {
+            throw ApplicationException::emptyPhotoAfter();
+        }
+
+        $this->resolverId = $userId;
+        $this->resolution = $resolution;
+        $this->photoAfter = $photoAfter;
+        $this->status = ApplicationStatus::RESOLVED;
+        $this->updatedAt = new DateTimeImmutable();
+    }
+
+    /**
      * @return int|null
      */
     public function getId()
