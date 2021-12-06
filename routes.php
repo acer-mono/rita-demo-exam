@@ -29,10 +29,7 @@ $routes = array_merge(
     require_once __DIR__ . '/app/user/registration/routes.php',
     require_once __DIR__ . '/app/application/routes.php',
     [
-        new Route('GET', '(.*)', static function () {
-            header('HTTP/1.0 404 Not Found');
-            require_once __DIR__ . '/app/pages/404.php';
-        }),
+        new Route('GET', '(.*)', show_404()),
     ]
 );
 

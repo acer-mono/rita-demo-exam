@@ -2,6 +2,19 @@
 declare(strict_types=1);
 
 /**
+ * Показывает страницу 404 с соответствующим заголовком.
+ *
+ * @return callable
+ */
+function show_404(): callable
+{
+    return static function () {
+        http_response_code(404);
+        require_once __DIR__ . '/../app/pages/404.php';
+    };
+}
+
+/**
  * Возвращает функцию, которая отравляет заголовок перенаправления по указанному пути.
  *
  * @param string $path
