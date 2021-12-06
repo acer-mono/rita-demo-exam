@@ -88,7 +88,7 @@ final class ApplicationController
      * @param $id
      * @return callable
      */
-    public function reject($id)
+    public function reject($id): callable
     {
         try {
             if (empty($_POST['resolution'])) {
