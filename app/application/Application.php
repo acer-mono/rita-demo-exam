@@ -76,6 +76,28 @@ final class Application
     }
 
     /**
+     * Отклоняет заявку.
+     *
+     * @param int $userId Идентификатор пользователя, отклонившего заявку
+     * @param string $resolution Причина отклонения заявки
+     * @throws ApplicationException
+     */
+    public function reject(int $userId, string $resolution)
+    {
+        if (!$this->isNew()) {
+            throw ApplicationException::cannotReject();
+        }
+
+        if (empty($resolution)) {
+            throw ApplicationException::emptyResolution();
+        }
+
+        $this->resolverId = $userId;
+        $this->resolution = $resolution;
+        $this->updatedAt = new DateTimeImmutable();
+    }
+
+    /**
      * @return int|null
      */
     public function getId()

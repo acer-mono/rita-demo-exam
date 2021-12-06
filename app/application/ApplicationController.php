@@ -83,6 +83,35 @@ final class ApplicationController
     }
 
     /**
+     * Отклоняет заявку с указанным идентификатором.
+     *
+     * @param $id
+     * @return callable
+     */
+    public function reject($id)
+    {
+        try {
+            if (empty($_POST['resolution'])) {
+                return send_json([
+                    'error' => 'Необходимо указать причину отклонения заявки.'
+                ]);
+            }
+
+            $application = $this->applications->getById((int) $id);
+
+            $application->reject($this->session->getUserId(), $_POST['resolution']);
+
+            return send_json([
+                //
+            ]);
+        } catch (ApplicationException $exception) {
+            return send_json([
+                'error' => $exception->getMessage()
+            ], 400);
+        }
+    }
+
+    /**
      * Удаляет заявку по указанному идентифкатору.
      *
      * @param int $id
