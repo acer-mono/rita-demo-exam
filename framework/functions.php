@@ -108,7 +108,7 @@ function check_is_admin(): callable
 {
     $session = Session::getInstance();
 
-    if ($session->isLoggedIn() && $session->hasRole('admin')) {
+    if ($session->isAdmin()) {
         return static function () {
             // пользователь админ, ничего не делаем
         };

@@ -42,6 +42,17 @@ final class Session
     }
 
     /**
+     * Указывает, является ли пользователь админом.
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->isLoggedIn()
+               && in_array('admin', $_SESSION['roles'] ?? [], true);
+    }
+
+    /**
      * Возвращает идентификатор залогиненного пользователя или NULL, если он не залогинен.
      *
      * @return int|null

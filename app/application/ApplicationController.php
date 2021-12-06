@@ -38,7 +38,7 @@ final class ApplicationController
         if (is_ajax_request()) {
             return send_json($this->fetchApplicationsQuery->execute(
                 $this->session->getUserId(),
-                $this->session->hasRole('admin')
+                $this->session->isAdmin()
             ));
         }
 
