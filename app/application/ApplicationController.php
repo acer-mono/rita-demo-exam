@@ -122,12 +122,6 @@ final class ApplicationController
         try {
             $application = $this->applications->getById((int) $id);
 
-            if (!$application->isNew()) {
-                return send_json([
-                    'error' => 'Удалить можно только новую заявку.'
-                ], 400);
-            }
-
             if ($application->getAuthorId() !== $this->session->getUserId()) {
                 return send_json([
                     'error' => 'Заявка не найдена'
@@ -142,7 +136,7 @@ final class ApplicationController
         } catch (ApplicationException $exception) {
             return send_json([
                 'error' => $exception->getMessage()
-            ], 404);
+            ], 400);
         }
     }
 }

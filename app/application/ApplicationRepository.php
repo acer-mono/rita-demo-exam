@@ -119,9 +119,14 @@ SQL;
      * Удаляет заявку.
      *
      * @param Application $application
+     * @throws ApplicationException
      */
     public function remove(Application $application)
     {
+        if (!$application->isNew()) {
+            throw ApplicationException::cannotRemove();
+        }
+
         $sql = 'delete from application where id = :id';
         $stmt = $this->database->getConnection()->prepare($sql);
         $stmt->bindValue(':id', $application->getId(), PDO::PARAM_INT);
