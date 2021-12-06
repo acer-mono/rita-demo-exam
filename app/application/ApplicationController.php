@@ -90,12 +90,6 @@ final class ApplicationController
      */
     public function delete($id): callable
     {
-        if ($this->session->isAdmin()) {
-            return send_json([
-                'error' => 'Вы не можете выполнить это действие.'
-            ]);
-        }
-
         try {
             $application = $this->applications->getById((int) $id);
 

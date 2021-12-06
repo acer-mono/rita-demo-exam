@@ -140,3 +140,32 @@ function check_is_admin(): callable
         return false;
     };
 }
+
+/**
+ * Проверяет, что пользователь НЕ является админом.
+ *
+ * @return callable
+ */
+function check_is_not_admin(): callable
+{
+    $session = Session::getInstance();
+
+    if (!$session->isAdmin()) {
+        return static function () {
+            // пользователь админ, ничего не делаем
+        };
+    }
+
+    if (is_ajax_request()) {
+        return send_json([
+            'error' => 'Доступ в раздел или к действию ограничен.'
+        ], 403, true);
+    }
+
+    return static function () {
+        require_once __DIR__ . '/../app/pages/403.php';
+
+        // Отменяем выполнение всех остальных обработчиков маршрута
+        return false;
+    };
+}
