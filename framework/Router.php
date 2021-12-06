@@ -150,7 +150,7 @@ final class Router
             // Вызываем обработчики маршрута,
             // которые должны выполниться перед непосредственным действием
             foreach ($route->getBefore() as $before) {
-                if ($before() === false) {
+                if ($before(...$params) === false) {
                     return null;
                 }
             }
@@ -160,7 +160,7 @@ final class Router
 
             // Выполняем остальные обработчики маршрута
             foreach ($route->getAfter() as $action) {
-                $action();
+                $action(...$params);
             }
 
             if (is_callable($result)) {
