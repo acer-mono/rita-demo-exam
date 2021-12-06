@@ -36,4 +36,18 @@ final class ApplicationRepository
 
         return Application::fromStorage($application);
     }
+
+    /**
+     * Удаляет заявку по её идентификатору, если она новая.
+     *
+     * @param int $id
+     */
+    public function removeById(int $id)
+    {
+        $sql = 'delete from application where id = :id and status = :status';
+        $stmt = $this->database->getConnection()->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':status', ApplicationStatus::NEW);
+        $stmt->execute();
+    }
 }

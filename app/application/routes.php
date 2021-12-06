@@ -14,6 +14,7 @@ require_once __DIR__ . '/FetchLatestApplicationsQuery.php';
 $database = Database::getInstance();
 $controller = new ApplicationController(
     Session::getInstance(),
+    new ApplicationRepository($database),
     new FetchLatestApplicationsQuery($database),
     new FetchApplicationsQuery($database),
     new CountResolvedApplicationsQuery($database),
@@ -28,7 +29,9 @@ $routes = [
         ->addBefore(check_is_logged_in()),
     (new Route('GET', '/applications/total', [$controller, 'total'])),
     (new Route('GET', '/applications/(\d+)', [$controller, 'show']))
-        ->addBefore(check_is_logged_in())
+        ->addBefore(check_is_logged_in()),
+    (new Route('POST', '/applications/(\d+)/delete', [$controller, 'show']))
+        ->addBefore(check_is_admin()),
     //(new Route('POST', '/applications', [$controller, 'store']))
     //   ->addBefore(check_is_logged_in())
 ];

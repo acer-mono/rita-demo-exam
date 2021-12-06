@@ -7,6 +7,7 @@ declare(strict_types=1);
 final class ApplicationController
 {
     private $session;
+    private $applications;
     private $latestApplicationsQuery;
     private $fetchApplicationsQuery;
     private $countResolvedApplicationsQuery;
@@ -14,12 +15,14 @@ final class ApplicationController
 
     public function __construct(
         Session $session,
+        ApplicationRepository $applications,
         FetchLatestApplicationsQuery $latestApplicationsQuery,
         FetchApplicationsQuery $fetchApplicationsQuery,
         CountResolvedApplicationsQuery $countResolvedApplicationsQuery,
         FetchSingleApplicationQuery $fetchSingleApplicationQuery
     ) {
         $this->session = $session;
+        $this->applications = $applications;
         $this->latestApplicationsQuery = $latestApplicationsQuery;
         $this->fetchApplicationsQuery = $fetchApplicationsQuery;
         $this->countResolvedApplicationsQuery = $countResolvedApplicationsQuery;
@@ -77,5 +80,20 @@ final class ApplicationController
         }
 
         require_once __DIR__ . '/show.php';
+    }
+
+    /**
+     * Удаляет заявку по указанному идентифкатору.
+     *
+     * @param $id
+     * @return callable
+     */
+    public function delete($id)
+    {
+        $this->applications->removeById($id);
+
+        return send_json([
+            //
+        ]);
     }
 }
