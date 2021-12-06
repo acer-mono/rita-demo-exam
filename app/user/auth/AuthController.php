@@ -12,7 +12,7 @@ final class AuthController
 
     public function login()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        if (is_get_request()) {
             require_once __DIR__ . '/view.php';
             return;
         }

@@ -28,6 +28,26 @@ function redirect(string $path): callable
 }
 
 /**
+ * Возвращает TRUE, если это GET-запрос.
+ *
+ * @return bool
+ */
+function is_get_request(): bool
+{
+    return $_SERVER['REQUEST_METHOD'] === 'GET';
+}
+
+/**
+ * Возвращает TRUE, если это POST-запрос.
+ *
+ * @return bool
+ */
+function is_post_request(): bool
+{
+    return $_SERVER['REQUEST_METHOD'] === 'POST';
+}
+
+/**
  * Проверяет, является ли текущий запрос AJAX-запросом.
  *
  * @return bool
