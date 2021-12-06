@@ -59,29 +59,29 @@ final class ApplicationCategoryRepository
      */
     public function store(ApplicationCategory $category): int
     {
-        if ($category->getId() === null) {
-            $this->insert($category);
-            return $this->database->getLastInsertId();
-        }
-
-        $this->update($category);
-        return $category->getId();
+        return $category->getId() === null
+            ? $this->insert($category)
+            : $this->update($category);
     }
 
-    private function insert(ApplicationCategory $category)
+    private function insert(ApplicationCategory $category): int
     {
         $sql = 'insert into application_category (name) values (:name)';
         $stmt = $this->database->getConnection()->prepare($sql);
         $stmt->bindValue(':name', $category->getName());
         $stmt->execute();
+
+        return $this->database->getLastInsertId();
     }
 
-    private function update(ApplicationCategory $category)
+    private function update(ApplicationCategory $category): int
     {
         $sql = 'update application_category set name = :name where id = :id';
         $stmt = $this->database->getConnection()->prepare($sql);
         $stmt->bindValue(':id', $category->getId(), PDO::PARAM_INT);
         $stmt->bindValue(':name', $category->getName());
         $stmt->execute();
+
+        return $category->getId();
     }
 }
