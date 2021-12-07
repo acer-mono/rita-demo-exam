@@ -1,4 +1,5 @@
 .idea/
 .env
 docker/mysql/data
-database.config.php
+/config/database.php
+/uploads/
