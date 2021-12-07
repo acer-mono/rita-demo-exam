@@ -24,7 +24,7 @@ $controller = new ApplicationController(
     new PhotoUploader(FileUploader::getInstance())
 );
 
-$routes = [
+return [
     // Несколько последних заявок, запрашиваются AJAX-ом
     new Route('GET', '/applications/latest', [$controller, 'latest']),
     // Страница заявок
@@ -47,8 +47,3 @@ $routes = [
         ->addBefore(check_is_logged_in())
         ->addBefore(check_is_not_admin()),
 ];
-
-return array_merge(
-    $routes,
-    require_once __DIR__ . '/category/routes.php'
-);
