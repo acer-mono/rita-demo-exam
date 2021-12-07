@@ -11,6 +11,8 @@ $files = [
     __DIR__ . '/framework/Router.php',
     __DIR__ . '/framework/Session.php',
     __DIR__ . '/framework/Database.php',
+    __DIR__ . '/framework/FileUploader.php',
+    __DIR__ . '/framework/FileUploaderException.php',
 ];
 
 foreach ($files as $file) {

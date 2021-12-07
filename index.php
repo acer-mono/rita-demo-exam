@@ -11,6 +11,8 @@ Database::createInstance(
     $dbConfig['DB_PASS']
 );
 
+FileUploader::createInstance(__DIR__ . '/uploads');
+
 // Стартуем пользовательскую сессию
 Session::getInstance()->start();
 
