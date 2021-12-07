@@ -106,6 +106,8 @@ final class ApplicationController
 
             $application->reject($this->session->getUserId(), $_POST['resolution']);
 
+            $this->applications->store($application);
+
             return send_json([
                 //
             ]);
