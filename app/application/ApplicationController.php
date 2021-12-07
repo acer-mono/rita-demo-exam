@@ -12,6 +12,7 @@ final class ApplicationController
     private $fetchApplicationsQuery;
     private $countResolvedApplicationsQuery;
     private $fetchSingleApplicationQuery;
+    private $photoUploader;
 
     public function __construct(
         Session $session,
@@ -19,7 +20,8 @@ final class ApplicationController
         FetchLatestApplicationsQuery $latestApplicationsQuery,
         FetchApplicationsQuery $fetchApplicationsQuery,
         CountResolvedApplicationsQuery $countResolvedApplicationsQuery,
-        FetchSingleApplicationQuery $fetchSingleApplicationQuery
+        FetchSingleApplicationQuery $fetchSingleApplicationQuery,
+        PhotoUploader $photoUploader
     ) {
         $this->session = $session;
         $this->applications = $applications;
@@ -27,6 +29,7 @@ final class ApplicationController
         $this->fetchApplicationsQuery = $fetchApplicationsQuery;
         $this->countResolvedApplicationsQuery = $countResolvedApplicationsQuery;
         $this->fetchSingleApplicationQuery = $fetchSingleApplicationQuery;
+        $this->photoUploader = $photoUploader;
     }
 
     /**
@@ -93,8 +96,10 @@ final class ApplicationController
         try {
             if (empty($_POST['resolution'])) {
                 return send_json([
-                    'error' => 'Необходимо указать причину отклонения заявки.'
-                ]);
+                    'errors' => [
+                        'Необходимо указать причину отклонения заявки.'
+                    ]
+                ], 400);
             }
 
             $application = $this->applications->getById((int) $id);
@@ -106,7 +111,9 @@ final class ApplicationController
             ]);
         } catch (ApplicationException $exception) {
             return send_json([
-                'error' => $exception->getMessage()
+                'errors' => [
+                    $exception->getMessage()
+                ]
             ], 400);
         }
     }
@@ -125,25 +132,29 @@ final class ApplicationController
             if (!empty($errors)) {
                 return send_json([
                     'errors' => $errors
-                ]);
+                ], 400);
             }
 
             $application = $this->applications->getById((int) $id);
 
-            // todo: загрузка файла
+            $photoPath = $this->photoUploader->uploadPhotoBefore($_FILES['photo'], $application->getId());
 
             $application->resolve(
                 $this->session->getUserId(),
                 $_POST['resolution'],
-                '' // todo: путь к файлу
+                $photoPath
             );
+
+            $this->applications->store($application);
 
             return send_json([
                 //
             ]);
-        } catch (ApplicationException $exception) {
+        } catch (\Exception $exception) {
             return send_json([
-                'error' => $exception->getMessage()
+                'errors' => [
+                    $exception->getMessage()
+                ]
             ], 400);
         }
     }
@@ -154,6 +165,10 @@ final class ApplicationController
 
         if (empty($data['resolution'])) {
             $errors[] = 'Необходимо указать описание решения.';
+        }
+
+        if (empty($files['photo'])) {
+            $errors[] = 'Необходимо загрузить фотографию.';
         }
 
         return $errors;
@@ -183,7 +198,9 @@ final class ApplicationController
             ]);
         } catch (ApplicationException $exception) {
             return send_json([
-                'error' => $exception->getMessage()
+                'errors' => [
+                    $exception->getMessage()
+                ]
             ], 400);
         }
     }

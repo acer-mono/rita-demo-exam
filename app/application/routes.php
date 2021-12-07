@@ -10,6 +10,8 @@ require_once __DIR__ . '/CountResolvedApplicationsQuery.php';
 require_once __DIR__ . '/FetchApplicationsQuery.php';
 require_once __DIR__ . '/FetchSingleApplicationQuery.php';
 require_once __DIR__ . '/FetchLatestApplicationsQuery.php';
+require_once __DIR__ . '/PhotoUploader.php';
+require_once __DIR__ . '/PhotoUploaderException.php';
 
 $database = Database::getInstance();
 $controller = new ApplicationController(
@@ -18,7 +20,8 @@ $controller = new ApplicationController(
     new FetchLatestApplicationsQuery($database),
     new FetchApplicationsQuery($database),
     new CountResolvedApplicationsQuery($database),
-    new FetchSingleApplicationQuery($database)
+    new FetchSingleApplicationQuery($database),
+    new PhotoUploader(FileUploader::getInstance())
 );
 
 $routes = [
