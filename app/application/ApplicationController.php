@@ -139,7 +139,7 @@ final class ApplicationController
 
             $application = $this->applications->getById((int) $id);
 
-            $photoPath = $this->photoUploader->uploadPhotoAfter($_FILES['photo'], $application->getId());
+            $photoPath = $this->photoUploader->upload($_FILES['photo']);
 
             $application->resolve(
                 $this->session->getUserId(),
