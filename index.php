@@ -4,7 +4,12 @@ declare(strict_types=1);
 require_once __DIR__ . '/includes.php';
 
 // Подключаемся к БД
-require_once __DIR__ . '/database.php';
+$dbConfig = require_once __DIR__ . '/config/database.php';
+Database::createInstance(
+    $dbConfig['DB_DSN'],
+    $dbConfig['DB_USER'],
+    $dbConfig['DB_PASS']
+);
 
 // Стартуем пользовательскую сессию
 Session::getInstance()->start();
