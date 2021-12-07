@@ -16,9 +16,19 @@ final class Route
      */
     public function __construct($methods, string $pattern, callable $action)
     {
-        $this->methods = is_string($methods) ? [$methods] : $methods;
+        $this->setMethods($methods);
         $this->pattern = $pattern;
         $this->action = $action;
+    }
+
+    private function setMethods($methods)
+    {
+        if ($methods === 'ANY') {
+            $this->methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
+            return;
+        }
+
+        $this->methods = is_string($methods) ? [$methods] : $methods;
     }
 
     /**

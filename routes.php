@@ -29,7 +29,7 @@ $routes = array_merge(
     require_once __DIR__ . '/app/user/registration/routes.php',
     require_once __DIR__ . '/app/application/routes.php',
     [
-        new Route('GET', '(.*)', show_404()),
+        new Route('ANY', '(.*)', show_404()),
     ]
 );
 
