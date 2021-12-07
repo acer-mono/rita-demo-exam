@@ -25,6 +25,7 @@ if (!is_ajax_request()) {
  */
 $routes = array_merge(
     require_once __DIR__ . '/app/index/routes.php',
+    require_once __DIR__ . '/app/user/account/routes.php',
     require_once __DIR__ . '/app/user/auth/routes.php',
     require_once __DIR__ . '/app/user/registration/routes.php',
     require_once __DIR__ . '/app/application/routes.php',
