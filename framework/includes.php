@@ -6,13 +6,13 @@ declare(strict_types=1);
 // require_once используется во избежание
 // многократного подключения одного и того же файла
 $files = [
-    __DIR__ . '/framework/functions.php',
-    __DIR__ . '/framework/Route.php',
-    __DIR__ . '/framework/Router.php',
-    __DIR__ . '/framework/Session.php',
-    __DIR__ . '/framework/Database.php',
-    __DIR__ . '/framework/FileUploader.php',
-    __DIR__ . '/framework/FileUploaderException.php',
+    __DIR__ . '/functions.php',
+    __DIR__ . '/Route.php',
+    __DIR__ . '/Router.php',
+    __DIR__ . '/Session.php',
+    __DIR__ . '/Database.php',
+    __DIR__ . '/FileUploader.php',
+    __DIR__ . '/FileUploaderException.php',
 ];
 
 foreach ($files as $file) {
