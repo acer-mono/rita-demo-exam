@@ -97,7 +97,7 @@ final class ApplicationController
             if (empty($_POST['resolution'])) {
                 return send_json([
                     'errors' => [
-                        'Необходимо указать причину отклонения заявки.'
+                        'resolution' => 'Необходимо указать причину отклонения заявки.'
                     ]
                 ], 400);
             }
@@ -166,11 +166,11 @@ final class ApplicationController
         $errors = [];
 
         if (empty($data['resolution'])) {
-            $errors[] = 'Необходимо указать описание решения.';
+            $errors['resolution'] = 'Необходимо указать описание решения.';
         }
 
         if (empty($files['photo'])) {
-            $errors[] = 'Необходимо загрузить фотографию.';
+            $errors['photo'] = 'Необходимо загрузить фотографию.';
         }
 
         return $errors;
