@@ -86,6 +86,77 @@ final class ApplicationController
     }
 
     /**
+     * Показывает страницу создания заявки.
+     */
+    public function create()
+    {
+        require_once __DIR__ . '/create.php';
+    }
+
+    /**
+     * Сохраняет заявку.
+     *
+     * @return callable
+     */
+    public function store(): callable
+    {
+        $errors = self::validateCreationInput($_POST, $_FILES);
+
+        if (count($errors)) {
+            return send_json([
+                'errors' => $errors
+            ], 400);
+        }
+
+        try {
+            $photoPath = $this->photoUploader->upload($_FILES['photo']);
+
+            $application = Application::create(
+                $this->session->getUserId(),
+                (int) $_POST['categoryId'],
+                $_POST['title'],
+                $_POST['description'],
+                $photoPath
+            );
+
+            $applicationId = $this->applications->store($application);
+
+            return send_json([
+                'applicationId' => $applicationId
+            ], 201);
+        } catch (Exception $exception) {
+            return send_json([
+                'errors' => [
+                    $exception->getMessage()
+                ]
+            ], 500);
+        }
+    }
+
+    private static function validateCreationInput(array $data, array $files): array
+    {
+        $errors = [];
+
+        if (empty($data['categoryId'])) {
+            $errors['categoryId'] = 'Укажите категорию заявки.';
+        }
+
+        if (empty($data['title'])) {
+            $errors['title'] = 'Укажите тему заявки.';
+        }
+
+        if (empty($data['description'])) {
+            $errors['description'] = 'Опишите, в чём суть заявки.';
+        }
+
+        if (empty($files['photo'])) {
+            $errors['photo'] = 'Необходимо загрузить фотографию.';
+        }
+
+        return $errors;
+    }
+
+    /**
      * Отклоняет заявку с указанным идентификатором.
      *
      * @param $id
