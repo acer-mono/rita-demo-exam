@@ -19,7 +19,9 @@ final class FetchLatestApplicationsQuery
             select app.id,
                    app.title,
                    app.description,
-                   app.photo_before as photo,
+                   app.created_at as createdAt,
+                   app.photo_before as photoBefore,
+                   app.photo_after as photoAfter,
                    ac.name as categoryName,
                    author.login as authorLogin,
                    author.name as authorName

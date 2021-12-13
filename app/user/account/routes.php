@@ -5,9 +5,13 @@ require_once __DIR__ . '/FetchUserInfoQuery.php';
 
 return [
     (new Route('GET', '/account', static function () {
-        $data = (new FetchUserInfoQuery(Database::getInstance()))
-            ->execute(Session::getInstance()->getUserId());
+        if (is_ajax_request()) {
+            $data = (new FetchUserInfoQuery(Database::getInstance()))
+                ->execute(Session::getInstance()->getUserId());
 
-        return send_json($data);
+            return send_json($data);
+        }
+
+        require_once __DIR__ . '/view.php';
     }))->addBefore(check_is_logged_in()),
 ];

@@ -1,0 +1,42 @@
+.landing-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body { 
+    height:100vh; 
+    margin:0;
+}
+
+footer { 
+    min-height: 50px; 
+    color:#3FA1D8; 
+}
+
+footer a {
+    color: #E55959;
+}
+
+body { 
+  display: flex; 
+  flex-direction: column; 
+}
+
+footer {
+  margin-top: auto; 
+}
+
+.card-img-scaled {
+    display: block;
+    z-index: 1000;
+    position: relative;
+    transform: scale(1.3);
+    transition: transform 250ms;
+}
+
+.application-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}

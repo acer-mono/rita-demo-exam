@@ -13,8 +13,7 @@ $controller = new ApplicationCategoryController(
 );
 
 return [
-    (new Route('GET', '/categories', [$controller, 'list']))
-        ->addBefore(check_is_admin()),
+    (new Route('GET', '/categories', [$controller, 'list'])),
     (new Route('POST', '/categories', [$controller, 'create']))
         ->addBefore(check_is_admin()),
     (new Route('POST', '/categories/(\d+)', [$controller, 'update']))
