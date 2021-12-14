@@ -44,7 +44,7 @@ const ApplicationCreationForm = {
         id="photo" />
         <div class="invalid-feedback">{{errors.photo}}</div> 
       </div>
-      <button type="submit" v-if="checkForm" @click="this.createApplication()" class="btn btn-primary">Создать</button>
+      <button type="submit" v-if="checkForm" @click="createApplication" class="btn btn-primary">Создать</button>
   </form>
 </div>
     `,
@@ -145,11 +145,15 @@ const ApplicationCreationForm = {
 
             let response = await fetch('/applications', {
                 method: 'POST',
+                headers: {
+                    'Accept': 'application/json'
+                },
                 body: formData
             });
 
-            let result = await response.json();
-            console.log(result);
+            if(response.ok) {
+                window.location = (await response.json()).path + '#categories';
+            }
         }
     },
     computed: {

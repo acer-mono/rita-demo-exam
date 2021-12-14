@@ -4,8 +4,8 @@ const ApplicationItem = {
     <div class="card m-2 border-0" style="max-width: 500px;">
       <div class="row no-gutters">
         <div class="col-4" @mouseover="isBefore = false" @mouseleave="isBefore = true">
-        <img v-if="isBefore" :src="beforeImage" class="card-img" alt="before">
-        <img v-if="!isBefore" :src="afterImage" class="card-img card-img-scaled" alt="after">
+        <img v-if="isBefore" :src="'/uploads/' + beforeImage" class="card-img" alt="before">
+        <img v-if="!isBefore" :src="'/uploads/' + afterImage" class="card-img card-img-scaled" alt="after">
         </div>
         <div class="col-8">
           <div class="card-body">

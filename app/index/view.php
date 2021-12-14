@@ -1,3 +1,4 @@
+<?php if(!Session::getInstance()->isAdmin()): ?>
 <div class="row">
     <div class="col">
         <h3 class="text-center">Вместе - лучше!</h3>
@@ -20,9 +21,9 @@
             <div class="card-body text-center">
                 <h5 class="card-title">Зарегистрируйся</h5>
                 <p class="card-text">Уже сообщал о тараканах в общежитии?
-                    Тогда <a href="#">логинься!</a>
+                    Тогда <a href="/login">логинься!</a>
                 </p>
-                <a href="#" class="btn btn-primary">Регистрируйся</a>
+                <a href="/register" class="btn btn-primary">Регистрируйся</a>
             </div>
         </div>
     </div>
@@ -47,6 +48,7 @@
         </div>
     </div>
 </div>
+<?php endif; ?>
 <div class="row mt-3">
     <div class="col">
         <counter />

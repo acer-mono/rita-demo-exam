@@ -119,10 +119,10 @@ final class ApplicationController
                 $photoPath
             );
 
-            $applicationId = $this->applications->store($application);
+            $this->applications->store($application);
 
             return send_json([
-                'applicationId' => $applicationId
+                'path' => '/account'
             ], 201);
         } catch (Exception $exception) {
             return send_json([

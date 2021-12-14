@@ -28,12 +28,13 @@ final class FetchLatestApplicationsQuery
             from application app
             inner join application_category ac on app.category_id = ac.id
             inner join user author on app.author_id = author.id
-            where app.resolver_id is null
+            where app.status = :status
             order by created_at desc
             limit :limit
 SQL;
 
         $stmt = $this->database->getConnection()->prepare($sql);
+        $stmt->bindValue(':status', ApplicationStatus::RESOLVED, PDO::PARAM_INT);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
 

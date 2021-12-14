@@ -19,17 +19,41 @@
             <?php endif; ?>
         </ul>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-pane fade show active"
+                 id="profile"
+                 role="tabpanel"
+                 aria-labelledby="home-tab">
                 <account-info />
             </div>
-            <div class="tab-pane fade" id="applications" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="tab-pane fade"
+                 id="applications"
+                 role="tabpanel"
+                 aria-labelledby="profile-tab">
                 <account-applications />
             </div>
             <?php if (Session::getInstance()->isAdmin()): ?>
-            <div class="tab-pane fade" id="categories" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="tab-pane fade"
+                 id="categories"
+                 role="tabpanel"
+                 aria-labelledby="profile-tab">
                 <category-list />
             </div>
             <?php endif; ?>
         </div>
     </div>
 </div>
+<script>
+    window.addEventListener('load', () => {
+        let id = location.hash.replace('#', '');
+        let element = document.getElementById(id);
+
+        if (element === null) {
+            return;
+        }
+
+        document.getElementById('profile-tab').classList.remove('active');
+        document.getElementById('profile').classList.remove('show', 'active');
+        document.getElementById(`${id}-tab`).classList.add('active');
+        element.classList.add('show', 'active');
+    });
+</script>
