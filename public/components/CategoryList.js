@@ -68,8 +68,11 @@ const CategoryList = {
                 }
             });
 
+            console.log(response)
             if (response.ok) {
                 this.items = await this.getCategories();
+            } else {
+                console.log(response)
             }
         },
 

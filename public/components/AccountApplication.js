@@ -6,13 +6,14 @@ const AccountApplication = {
       <div class="card-body">
         <h5 class="card-title">{{title}}</h5>
         <p class="card-text">{{description}}</p>
-        <a href="../Application.php" class="btn btn-primary">Подробнее</a>
+        <a :href="'/applications/' + id" class="btn btn-primary">Подробнее</a>
       </div>
       <div class="card-footer d-flex justify-content-between">
         <div :class="{'text-success': status == 'Решена', 'text-danger': status == 'Отклонена', 'text-primary': status == 'Новая'}">
         {{status}}
         </div>
         <div class="text-muted">{{date}}</div>
+        <div class="text-muted">{{isAdmin}}</div>
       </div>
     </div>
 </div>
@@ -21,5 +22,5 @@ const AccountApplication = {
         return {
         }
     },
-    props: ['title', 'date', 'description', 'status', 'category']
+    props: ['title', 'date', 'description', 'status', 'category', 'id', 'isAdmin']
 }

@@ -17,7 +17,7 @@ create table application
     constraint application_author_fk
         foreign key (author_id) references user (id),
     constraint application_category_fk
-        foreign key (category_id) references application_category (id),
+        foreign key (category_id) references application_category (id) on delete cascade,
     constraint application_resolver_fk
         foreign key (resolver_id) references user (id)
 )

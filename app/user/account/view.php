@@ -29,7 +29,7 @@
                  id="applications"
                  role="tabpanel"
                  aria-labelledby="profile-tab">
-                <account-applications />
+                <account-applications is-admin="<?php echo Session::getInstance()->isAdmin(); ?>" />
             </div>
             <?php if (Session::getInstance()->isAdmin()): ?>
             <div class="tab-pane fade"

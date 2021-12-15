@@ -23,17 +23,19 @@ const AccountApplications = {
             </div>
         </div>
         <div class="col-md-6 col-sm-12 d-flex align-items-center pb-2">
-            <a href="/applications/create" class="ml-2 btn btn-primary btn-lg">Новая заявка</a>
+            <a v-if="!this.isAdmin" href="/applications/create" class="ml-2 btn btn-primary btn-lg">Новая заявка</a>
         </div>
     </div>
     <div class="row">
         <account-application v-for="item in this.filterItems" 
         :key="item.id"
+        :id="item.id"
         :title="item.title"
         :date="item.updatedAt"
         :category="item.categoryName"
         :status="item.status"
-        :description="item.description" />
+        :description="item.description"
+        :isAdmin="this.isAdmin"/>
     </div>
 </div>
     `,
@@ -46,6 +48,7 @@ const AccountApplications = {
             items: []
         }
     },
+    props: ['isAdmin'],
     methods: {
         async fetchApplications() {
             let response = await fetch('/applications', {
@@ -63,6 +66,7 @@ const AccountApplications = {
         }
     },
     async mounted() {
+        console.log(this.isAdmin);
         await this.fetchApplications();
     },
     computed: {

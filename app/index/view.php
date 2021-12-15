@@ -33,7 +33,7 @@
             <div class="card-body text-center">
                 <h5 class="card-title">Оставь заявку</h5>
                 <p class="card-text">Заполни форму заявки и обязательно прикрепи фотографию.</p>
-                <a href="#" class="btn btn-primary">Пиши нам</a>
+                <a href="/applications/create" class="btn btn-primary">Пиши нам</a>
             </div>
         </div>
     </div>
@@ -43,7 +43,7 @@
             <div class="card-body text-center">
                 <h5 class="card-title">Мы поможем</h5>
                 <p class="card-text">Мы стараемся обкашливать вопросики быстро.</p>
-                <a href="#" class="btn btn-primary">Последние заявки</a>
+                <a href="/account#applications" class="btn btn-primary">Последние заявки</a>
             </div>
         </div>
     </div>
