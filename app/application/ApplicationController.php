@@ -80,6 +80,7 @@ final class ApplicationController
 
         if ($this->canShowApplication($application)) {
             require_once __DIR__ . '/show.php';
+            return;
         }
 
         return show_404();
@@ -96,7 +97,7 @@ final class ApplicationController
         return is_array($application)
             && (
                 $isAuthorOrResolver
-                || ($application['status'] === ApplicationStatus::NEW && $this->session->isAdmin())
+                || ((int) $application['status'] === ApplicationStatus::NEW && $this->session->isAdmin())
             );
     }
 
