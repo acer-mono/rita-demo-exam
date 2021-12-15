@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col">
-        <h3 class="text-center">Личный кабинет администратора</h3>
+        <h3 class="text-center">Личный кабинет <?php if (Session::getInstance()->isAdmin()): ?>администратора<?php endif; ?></h3>
     </div>
 </div>
 <div class="row">

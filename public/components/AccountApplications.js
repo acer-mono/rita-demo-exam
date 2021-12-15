@@ -28,9 +28,10 @@ const AccountApplications = {
     </div>
     <div class="row">
         <account-application v-for="item in this.filterItems" 
+        :key="item.id"
         :title="item.title"
-        :date="item.date"
-        :category="item.category"
+        :date="item.updatedAt"
+        :category="item.categoryName"
         :status="item.status"
         :description="item.description" />
     </div>
@@ -38,40 +39,31 @@ const AccountApplications = {
     `,
     data() {
         return {
+            status: ['Новая', 'Решена', 'Отклонена'],
             newItems: true,
             cancelItems: true,
             doneItems: true,
-            items: [
-                {
-                    title: "Hello",
-                    date: "12/06/1992",
-                    category: "pups",
-                    status: 'Новая',
-                    description: 'fgbfgb gbg trbrtbb trht rt trt hrthtr hthrhrt'
-                },
-                {
-                    title: "Hello",
-                    date: "12/06/1992",
-                    category: "pups",
-                    status: 'Решена',
-                    description: '/images/fill.png'
-                },
-                {
-                    title: "Hello",
-                    date: "12/06/1992",
-                    category: "pups",
-                    status: 'Отклонена',
-                    description: '/images/fill.png'
-                },
-                {
-                    title: "Hello",
-                    date: "12/06/1992",
-                    category: "pups",
-                    status: 'Решена',
-                    description: '/images/fill.png'
-                }
-            ]
+            items: []
         }
+    },
+    methods: {
+        async fetchApplications() {
+            let response = await fetch('/applications', {
+                headers: {
+                    'Accept': 'application/json'
+                },
+            });
+
+            if (response.ok) {
+                this.items = await response.json();
+                this.items.map(el => el.status = this.status[el.status]);
+            } else {
+                alert("Не удалось загрузить данные, обновите страницу");
+            }
+        }
+    },
+    async mounted() {
+        await this.fetchApplications();
     },
     computed: {
         filterItems() {
