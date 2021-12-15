@@ -78,11 +78,26 @@ final class ApplicationController
     {
         $application = $this->fetchSingleApplicationQuery->execute((int) $id);
 
-        if ($application === null || (int) $application['authorId'] !== $this->session->getUserId()) {
-            return show_404();
+        if ($this->canShowApplication($application)) {
+            require_once __DIR__ . '/show.php';
         }
 
-        require_once __DIR__ . '/show.php';
+        return show_404();
+    }
+
+    private function canShowApplication($application): bool
+    {
+        $isAuthorOrResolver = in_array(
+            $this->session->getUserId(),
+            [(int) $application['authorId'], (int) $application['resolverId']],
+            true
+        );
+
+        return is_array($application)
+            && (
+                $isAuthorOrResolver
+                || ($application['status'] === ApplicationStatus::NEW && $this->session->isAdmin())
+            );
     }
 
     /**

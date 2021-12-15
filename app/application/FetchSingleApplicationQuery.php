@@ -22,6 +22,8 @@ select
     ac.name as categoryName,
     author.name as authorName,
     resolver.name as resolverName,
+    app.author_id as authorId,
+    app.resolver_id as resolverId,
     app.title as title,
     app.description as description,
     app.photo_before as photoBefore,
