@@ -3,45 +3,46 @@ const ApplicationInfo = {
 <div class="container">
     <div class="row">
         <div class="col-sm-12 col-md-2 font-weight-bold pb-2">Название</div>
-        <div class="col-sm-12 col-md-10 pb-2">{{user.title}}</div>
+        <div class="col-sm-12 col-md-10 pb-2">{{application.title}}</div>
     </div>
     <div class="row">
         <div class="col d-flex justify-content-center pb-2">
-            <img :src="user.imageBefore" class="application-image" alt="Проблема">   
+            <img :src="'/uploads/' + application.photoBefore" class="application-image" alt="Проблема">   
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-2 font-weight-bold pb-2">Описание</div>
-        <div class="col-sm-12 col-md-10 pb-2">{{user.description}}</div>
+        <div class="col-sm-12 col-md-10 pb-2">{{application.description}}</div>
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-2 font-weight-bold pb-2">Категория</div>
-        <div class="col-sm-12 col-md-10 pb-2">{{user.category}}</div>
+        <div class="col-sm-12 col-md-10 pb-2">{{application.categoryName}}</div>
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-2 font-weight-bold pb-2">Статус</div>
-        <div class="col-sm-12 col-md-10 pb-2">{{user.status}}</div>
+        <div class="col-sm-12 col-md-10 pb-2">{{application.status}}</div>
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-2 font-weight-bold pb-2">Дата</div>
-        <div class="col-sm-12 col-md-10 pb-2">{{user.date}}</div>
+        <div class="col-sm-12 col-md-10 pb-2">{{application.createdAt}}</div>
     </div>
-    <div v-if="user.status==='Новая'" class="row">
+    <div v-if="application.status==='Новая' && !isAdmin" class="row">
         <div class="col pb-2">
-         <button class="btn btn-danger">Удалить</button>
+         <button @click="remove" class="btn btn-danger">Удалить</button>
         </div>
     </div>
-    <div class="row" v-if="user.resolution">
+    <div class="row" v-if="application.resolution">
         <div class="col-sm-12 col-md-2 font-weight-bold pb-2">Решение</div>
-        <div class="col-sm-12 col-md-10 pb-2">{{user.resolution}}</div>
+        <div class="col-sm-12 col-md-10 pb-2">{{application.resolution}}</div>
     </div>
-    <div class="row" v-if="user.imageAfter">
+    <div class="row" v-if="application.photoAfter">
         <div class="col d-flex justify-content-center pb-2">
-            <img :src="user.imageAfter" class="application-image" alt="Проблема">   
+            <img :src="'/uploads/'+application.photoAfter" class="application-image" alt="Проблема">   
         </div>
     </div>
-    <div class="row" v-if="user.status === 'Новая'">
+    <div class="row" v-if="application.status === 'Новая' && isAdmin">
         <div class="col">
+        <h3 class="text-center">Решение</h3>
             <form class="needs-validation col" novalidate @submit.prevent>
               <div class="form-group">
                 <label for="description">Описание</label>
@@ -64,7 +65,7 @@ const ApplicationInfo = {
                   <option value="Решена">Решена</option>
                 </select>
               </div>
-              <div class="form-group">
+              <div v-if="status === 'Решена'" class="form-group">
                 <label for="photo">Фото</label>
                 <input 
                 type="file" 
@@ -73,7 +74,7 @@ const ApplicationInfo = {
                 id="photo" />
                 <div class="invalid-feedback">{{errors.photo}}</div> 
               </div>
-              <button type="submit" v-if="checkForm" class="btn btn-primary">Решить</button>
+              <button type="submit" v-if="checkForm" @click="decide" class="btn btn-primary">Решить</button>
           </form>
         </div>
     </div>
@@ -81,18 +82,19 @@ const ApplicationInfo = {
 `,
     data() {
         return {
-            user: {
-                title: "Уберите двор",
-                description: "Описание бла-бла-бла",
-                category: "Творники-дворники",
-                status: "Отклонена",
-                date: "12/12/1992",
-                resolution: "Я сделаль",
-                imageBefore: "/images/done.png",
-                imageAfter: "/images/done.png"
+            application: {
+                id: "",
+                title: "",
+                description: "",
+                categoryName: "",
+                status: "",
+                createdAt: "",
+                resolution: "",
+                photoBefore: "",
+                photoAfter: ""
             },
             description: "",
-            photo: "",
+            photo: null,
             status: "Отклонена",
             errors: {
                 title: "",
@@ -113,6 +115,13 @@ const ApplicationInfo = {
                 }
             }
         }
+    },
+    props: ['applicationInfo', 'isAdmin'],
+    mounted() {
+        const status = ['Новая', 'Решена', 'Отклонена'];
+        this.application = JSON.parse(this.applicationInfo);
+        this.application.status = status[this.application.status];
+        console.log(this.application)
     },
     methods: {
         checkDescription() {
@@ -146,10 +155,67 @@ const ApplicationInfo = {
             this.errors.photo = "";
             this.photo = file;
         },
+        async remove() {
+            const response = await fetch(`/applications/${this.application.id}/delete`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                window.location = '/account#applications';
+            } else {
+                console.log('Не удалсь удалить заявку, попробуйте еще раз')
+            }
+        },
+        async decide() {
+            if (this.status === 'Решена') {
+                await this.resolve();
+            } else {
+                await this.reject();
+            }
+        },
+        async reject() {
+            const formData = new FormData();
+            formData.append('resolution', this.description);
+
+            let response = await fetch(`/applications/${this.application.id}/reject`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
+
+            if(response.ok) {
+                window.location = window.location;
+            }
+        },
+        async resolve() {
+            const formData = new FormData();
+            formData.append('resolution', this.description);
+            formData.append('photo', this.photo, this.photo.name);
+
+            let response = await fetch(`/applications/${this.application.id}/resolve`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
+
+            if(response.ok) {
+                window.location = window.location;
+            }
+        },
     },
     computed: {
         checkForm() {
-            return this.checkDescription() && this.checkPhoto();
+            return this.checkDescription()
+                && (this.status === 'Отклонена'
+                    || this.status === 'Решена' && this.checkPhoto()
+                );
         }
     }
 }

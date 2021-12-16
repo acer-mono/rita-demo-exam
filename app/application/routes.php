@@ -43,7 +43,7 @@ return [
         ->addBefore(check_is_admin()),
     (new Route('POST', '/applications/(\d+)/resolve', [$controller, 'resolve']))
         ->addBefore(check_is_admin()),
-    (new Route('POST', '/applications/(\d+)/delete', [$controller, 'show']))
+    (new Route('POST', '/applications/(\d+)/delete', [$controller, 'delete']))
         ->addBefore(check_is_logged_in())
         ->addBefore(check_is_not_admin()),
 ];
